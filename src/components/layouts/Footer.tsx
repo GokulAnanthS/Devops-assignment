@@ -29,7 +29,7 @@ export default function Footer() {
               sx={{ color: "text.primary" }}
               target="_blank"
             >
-              Crazy Man
+              Gokul Ananth
             </Link>
           </Typography>
         </Divider>
