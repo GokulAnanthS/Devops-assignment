@@ -15,14 +15,14 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/Aj7Ay/Netflix-clone.git'
+                git branch: 'main', url: 'https://github.com/GokulAnanthS/Devops-assignment'
             }
         }
         stage("Sonarqube Analysis "){
             steps{
                 withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
-                    -Dsonar.projectKey=Netflix '''
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=MyFlix \
+                    -Dsonar.projectKey=MyFlix '''
                 }
             }
         }
@@ -53,21 +53,21 @@ pipeline{
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
-                       sh "docker build --build-arg TMDB_V3_API_KEY=<yourtmdbapikey> -t netflix ."
-                       sh "docker tag netflix gokulananths/netflix:latest "
-                       sh "docker push gokulananths/netflix:latest "
+                       sh "docker build --build-arg TMDB_V3_API_KEY=<yourtmdbapikey> -t myflix ."
+                       sh "docker tag myflix gokulananths/myflix:latest "
+                       sh "docker push gokulananths/myflix:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image gokulananths/netflix:latest > trivyimage.txt" 
+                sh "trivy image gokulananths/myflix:latest > trivyimage.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d -p 8081:80 gokulananths/netflix:latest'
+                sh 'docker run -d -p 8081:80 gokulananths/myflix:latest'
             }
         }
         stage('Deploy to kubernets'){
@@ -90,7 +90,7 @@ pipeline{
             body: "Project: ${env.JOB_NAME}<br/>" +
                 "Build Number: ${env.BUILD_NUMBER}<br/>" +
                 "URL: ${env.BUILD_URL}<br/>",
-            to: 'iambatmanthegoat@gmail.com',                                #change mail here
+            to: 'gokul14121999@gmail.com',                                #change mail here
             attachmentsPattern: 'trivyfs.txt,trivyimage.txt'
         }
     }

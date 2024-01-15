@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: netflix-app
+  name: myflix-app
   labels:
-    app: netflix-app
+    app: myflix-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: netflix-app
+      app: myflix-app
   template:
     metadata:
       labels:
-        app: netflix-app
+        app: myflix-app
     spec:
       containers:
-      - name: netflix-app
-        image: gokulananths/netflix:latest
+      - name: myflix-app
+        image: gokulananths/myflix:latest
         ports:
         - containerPort: 80
